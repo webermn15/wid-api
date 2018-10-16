@@ -2,7 +2,7 @@ import json
 import falcon
 from falcon.media.validators import jsonschema
 from wid.schemas import load_schema
-from wid.db import Database
+from wid.db.db import Database
 
 psql = Database()
 

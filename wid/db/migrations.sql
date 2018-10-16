@@ -16,8 +16,9 @@ CREATE TABLE activities(
 
 CREATE TABLE engagements(
 	id SERIAL PRIMARY KEY,
-	date DATETIME TODAY(),
+	activity_id INT REFERENCES activities(id),
 	start_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+	end_time TIMESTAMP WITH TIME ZONE,
 	rating INT,
 	notes VARCHAR(255)
 );
