@@ -7,8 +7,8 @@ class Database(object):
     def __new__(cls):
         if cls._instance is None:
             cls._instance = object.__new__(cls)
-            # replace hardcoded db details with v a r i a b l e s
-            config = "dbname=nintendo user=michael"
+            # replace hardcoded db details with e n v  v a r i a b l e s
+            config = "dbname=widdev user=michael"
 
             try:
                 print("Attempting to connect to PostgreSQL...")
@@ -30,17 +30,31 @@ class Database(object):
         self.connection = self._instance.connection
         self.cursor = self._instance.cursor
 
-    def get_first_result(self, query):
+    def get_activity(self, id):
         try:
-            self.cursor.execute(query)
+            self.cursor.execute("SELECT * FROM activities WHERE id = %s", (id))
             result = self.cursor.fetchone()
 
         except Exception as error:
-            print('error running this query:\n{} error message:\n{}'.format(query, error))
+            print('error returning activity with id:\n{} error message:\n{}'.format(id, error))
             return None
 
         else:
             return result
+
+    def create_activity(self, name, description):
+        try:
+            self.cursor.execute("INSERT INTO activities (name, description) VALUES (%s, %s)", (name, description))
+            self.connection.commit()
+
+        except Exception as error:
+            print("error inserting record in table:\n{}".format(error))
+            return None
+
+        else:
+            self.cursor.execute("SELECT * FROM activities")
+            results = self.cursor.fetchall()
+            return results
 
     def __del__(self):
         self.cursor.close()

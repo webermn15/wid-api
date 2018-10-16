@@ -4,7 +4,7 @@
 ### A light application for staying on task and reflecting on your productivity
 *The micro helper to accomodate your macro visions*
 
-Instead of setting big ass goals and marking your progress along the way, **what i do** focuses on how you manage your daily routine. Create tasks, track when you start and stop them, and reflect on your satisfaction with your performance.
+Instead of setting big huge goals and marking your progress along the way, **What I Do** focuses on how you manage your daily routine. Create tasks, track when you start and stop them, and reflect on your satisfaction with your performance.
 
 * Set periodic push reminders to check if you're still on task
 * Keep a consistent record of how you've spent your day
