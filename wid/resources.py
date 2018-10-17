@@ -3,6 +3,7 @@ import falcon
 from falcon.media.validators import jsonschema
 from wid.schemas import load_schema
 from wid.db.db import Database
+from wid.utils import format_activities
 
 psql = Database()
 
@@ -20,16 +21,17 @@ class Activity(object):
         resp.body = json.dumps(data)
         resp.status = falcon.HTTP_200
 
-    @jsonschema.validate(load_schema('activity_creation'))
+    @jsonschema.validate(load_schema('activity_model'))
     def on_post(self, req, resp):
         name = req.media.get('name')
         description = req.media.get('description')
 
-        inserted = psql.create_activity(name, description)
+        # all_activities = psql.create_activity(name, description)
 
-        print(inserted)
+        data = format_activities(psql.create_activity(name, description))
 
-        if inserted is not None:
+        if data is not None:
             resp.status = falcon.HTTP_201
+            resp.body = json.dumps(data)
         else:
             resp.status = falcon.HTTP_400
