@@ -13,4 +13,4 @@ Instead of setting big huge goals and marking your progress along the way, **Wha
 ----
 ### This is a rest API built using Python's Falcon framework
 
-WID's API integrates a PostgreSQL database, to be consumed by a React front end. **Link here**
+WID's API integrates a PostgreSQL database, to be consumed by a [React front end client.](https://github.com/webermn15/wid-client)

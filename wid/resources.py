@@ -24,7 +24,7 @@ class CreateUser(object):
             resp.body = json.dumps({'you': 'did it'})
         else:
             print('no.')
-            resp.status = falcon.HTTP_406
+            resp.status = falcon.HTTP_400
 
 
 class AuthenticateUser(object):

@@ -1,8 +1,8 @@
 import falcon
-
 from .resources import Activity, CreateUser, AuthenticateUser
+from .middleware import CORSComponent
 
-api = application = falcon.API()
+api = application = falcon.API(middleware=[CORSComponent()])
 
 activity_resource = Activity()
 create_user = CreateUser()
