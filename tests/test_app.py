@@ -12,12 +12,13 @@ def client():
 
 
 def test_activity_get(client):
+    index = 1
     act = {
-        'name': 'Grind techskill',
-        'description': 'Press buttons until hands hurt'
+        'name': 'Practicing techskill',
+        'description': 'Pressing buttons until my hands hurt'
     }
 
-    response = client.simulate_get('/')
+    response = client.simulate_get('/activity/{}'.format(index))
     result_doc = json.loads(response.content)
 
     assert result_doc == act
@@ -31,7 +32,7 @@ def test_activity_post(client):
     }
 
     response = client.simulate_post(
-        '/',
+        '/activity',
         json=act
     )
 
