@@ -32,7 +32,14 @@ class Database(object):
         self.cursor = self._instance.cursor
 
     def authenticate_user(self, username, password):
-        return self._compare_hash(username, password)
+        auth_ok = self._compare_hash(username, password)
+
+        if auth_ok:
+            user_id = self._get_user_id(username)
+            return user_id
+
+        else:
+            return None
 
     def _compare_hash(self, username, password):
         db_hash = self._get_stored_hash(username)
@@ -84,17 +91,40 @@ class Database(object):
         hashed_pw = bcrypt.hashpw(password, salt)
         return hashed_pw
 
+    def _get_user_id(self, username):
+        try:
+            self.cursor.execute("SELECT id FROM users WHERE username = %s;", (username,))
+            result = self.cursor.fetchone()[0]
+
+        except Exception as error:
+            print('error returning id for username: {} \n error:\n {}'.format(username, error))
+
+        else:
+            return result
+
     def get_activity(self, id):
         try:
             self.cursor.execute("SELECT * FROM activities WHERE id = %s;", (id,))
-            result = self.cursor.fetchone()
+            result = self.cursor.fetchone()[0]
 
         except Exception as error:
-            print('error returning activity with id:\n{} error message:\n{}'.format(id, error))
+            print('error returning activity with id: {} \n error message:\n{}'.format(id, error))
             return None
 
         else:
             return result
+
+    def get_all_user_activities(self, user_id):
+        try:
+            self.cursor.execute("SELECT * FROM activities WHERE user_id = %s;", (user_id,))
+            results = self.cursor.fetchall()
+
+        except Exception as error:
+            print('error returning user activities:\n error message:\n{}'.format(error))
+            return None
+
+        else:
+            return results
 
     def create_activity(self, name, description):
         try:
@@ -102,7 +132,7 @@ class Database(object):
             self.connection.commit()
 
         except Exception as error:
-            print("error inserting record in table:\n{}".format(error))
+            print("error inserting activity in table:\n{}".format(error))
             return None
 
         else:

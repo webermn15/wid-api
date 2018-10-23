@@ -1,10 +1,9 @@
 import json
-import bcrypt
 import falcon
 from falcon.media.validators import jsonschema
 from wid.schemas import load_schema
 from wid.db.db import Database
-from wid.utils import format_activities
+from wid.utils import format_activities, format_activities_j
 
 psql = Database()
 
@@ -37,12 +36,18 @@ class AuthenticateUser(object):
         authenticated = psql.authenticate_user(username, password)
 
         if authenticated:
-            print('logged in')
+            user_act = psql.get_all_user_activities(authenticated)
+            user_act_json = [format_activities_j(act) for act in user_act]
+            user_json = {
+                'user_id': authenticated,
+                'username': username,
+                'activityList': user_act_json
+            }
             resp.status = falcon.HTTP_200
-            resp.body = json.dumps({'you': 'did it'})
+            resp.body = json.dumps({'user': user_json})
         else:
-            print('error loggin in')
             resp.status = falcon.HTTP_400
+            resp.body = json.dumps({'error': 'error message'})
 
 
 class Activity(object):
